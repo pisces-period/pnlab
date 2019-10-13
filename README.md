@@ -22,7 +22,7 @@ Then, log into the box of your choosing by invoking the following command (repla
 
 I strongly recommend you immediately run `sudo -i` everytime you log into the boxes, so root permissions won't be a problem.
 
-Though the box logs into the / root folder by default, you'll want to `cd /vagrant` as this is the __de facto__ root folder of the pan-net lab.
+Though the box logs into the / root folder by default, you'll want to `cd /vagrant` as this is the __de facto__ root folder of the pn lab.
 
 I'm assuming a target environment with VirtualBox and Vagrant installed. If you wish to use a different provider other than VirtualBox, please override the __*config.vm.provider=virtualbox*__ directive on the __*Vagrantfile*__ along with any other VirtualBox-specific settings and replace them with the vendor of your choosing (https://www.vagrantup.com/docs/providers/).
 
