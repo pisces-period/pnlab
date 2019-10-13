@@ -1,0 +1,29 @@
+---
+# tasks file for docker
+- name: install docker packages
+  apt:
+    name:
+      - docker.io
+      - python-docker
+    state: present
+    
+- name: enable docker startup on boot
+  service:
+    name: docker
+    enabled: yes
+    
+- name: set up docker daemon and logging driver
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  notify: restart docker
+  
+- name: build the getweather docker container
+  docker_image:
+    build:
+      path: /vagrant/getweather/
+      pull: no
+    name: getweather
+    tag: v1.0
+    source: build
+...

@@ -1,0 +1,24 @@
+---
+# tasks file for rsyslog
+- name: configure rsyslog.conf and custom rules
+  template:
+    src: rsyslog.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - restart rsyslog
+    
+- name: configure rsyslog remote logging
+  template:
+    src: 50-default.conf.j2
+    dest: /etc/rsyslog.d/50-default.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  notify:
+    - restart rsyslog
+...

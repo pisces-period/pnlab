@@ -1,0 +1,19 @@
+---
+# defaults file for rsyslog
+
+# rsyslong.conf.j2 variables
+# rsyslog L3 port settings (UDP is lossy, adding TCP for reliability)
+rsyslog_udp_server: true
+rsyslog_udp_server_port: 514
+rsyslog_tcp_server: false
+rsyslog_tcp_server_port: 514
+
+# rsyslog rules for custom logs
+rsyslog_custom_rules:
+    - $template CustInboundLogs, "/var/log/remotelogs/%FROMHOST-IP%/%PROGRAMNAME%.log"
+    - "*.* ?CustInboundLogs"
+
+relay_logs: []
+destination_server:
+
+...
