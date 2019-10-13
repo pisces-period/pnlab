@@ -102,14 +102,11 @@ You should see the following folder structure on pan-peter VM (relative to /vagr
 ├── README.md
 ├── scanner
 │   ├── app
-│   │   ├── 192.168.50.10_scanner.log
-│   │   ├── 192.168.50.11_scanner.log
 │   │   ├── __init__.py
 │   │   └── scanner.py
 │   ├── README.md
 │   ├── requirements.txt
 │   └── setup.py
-├── ubuntu-xenial-16.04-cloudimg-console.log
 └── Vagrantfile
 ```
 Below I describe the solution to the second challenge (the first and third challenges are described in their respective README's).
