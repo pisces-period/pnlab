@@ -1,38 +1,42 @@
-Role Name
-=========
+### Syslog Role (Exercise III)
 
-A brief description of the role goes here.
+The objective of this exercise is to configure an rsyslog server, capable of logging default log files, as well as custom log files, and relaying logs to an external log server. This role is deployed first because it makes more sense to prepare the syslog server before sending Docker logs.
 
-Requirements
-------------
+To accomplish this task, I'm dedicating a role for this configuration, along with 2 tasks, both using jinja2 and Ansible template module, and a notify-hook to restart services when appropriate. Please notice the configuration is based on group/root 644 permissions and you'll need to perform sudo -i to be able to navigate the log files.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Within the __*rsyslog*__ role folder structure, the __*defaults*__ folder contains a __*main.yml*__ file, which stores the desired configuration for the rsyslog server. Therefore, any desired configuration change __*MUST*__ be set here and here only (e.g., adding remote syslog servers to relay logs, custom syslog rules, etc.).
 
-Role Variables
---------------
+When you run the Ansible playbook, these defaults are evaluated and copied to the __*rsyslog.conf*__ and __*50-default.conf*__ files respectively, using Ansible __*template*__ module. The changes (if there is any) are written to the template files, which are located in __*rsyslog/templates*__ (OBS - this is relative to the roles folder, the actual full path is /vagrant/ansible/roles/rsyslog/templates).
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+These template files contain jinja2 expressions, which add/update/remove lines according to the defaults specified. The original file is then replaced by a new version that contains all the changes.
 
-Dependencies
-------------
+The first task evaluates/re-writes the __*rsyslog.conf*__ file (general settings, custom rules).
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+The second task evaluates/re-writes the __*50-default.conf*__ file (log relay settings).
 
-Example Playbook
-----------------
+#### Testing Exercise III
+If you want, you can use the readily available peter-pan box to test remote log settings, by logging into the box (do not forget to escalate privilege) and appending the following line at the end of the __*/etc/rsyslog.d/50-default.conf*__ file:
+`*.*   @192.168.50.10:514 `
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Next,restart the rsyslog service:
+` systemctl restart rsyslog `
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Execute the following commnand (or any other log-related one, really):
+` logger -n 192.168.50.10 "log" `
 
-License
--------
+Then, SSH into Pan-Peter and verify the contents of /etc/var/log/syslog:
+` vagrant ssh pan-peter `
+` cat /etc/var/log/syslog `
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Output example:
+```
+Oct 13 17:31:22 peter-pan apache2[3322]:  * Starting Apache httpd web server apache2
+Oct 13 17:31:22 peter-pan apache2[3322]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Oct 13 17:31:23 peter-pan apache2[3322]:  *
+Oct 13 17:31:23 peter-pan systemd[1]: Started LSB: Apache2 web server.
+Oct 13 17:31:25 peter-pan systemd[1]: Reloading.
+Oct 13 17:31:25 peter-pan systemd[1]: Started ACPI event daemon.
+Oct 13 17:31:34 peter-pan systemd[1]: Started LSB: Apache2 web server.
+Oct 13 17:32:47 peter-pan kernel: [ 4265.748603] DCCP: Activated CCID 2 (TCP-like)
+Oct 13 17:50:03 peter-pan vagrant log
+```

@@ -1,38 +1,35 @@
-Role Name
-=========
+### Docker Role (Exercise I)
 
-A brief description of the role goes here.
+The objective of this exercise is to deploy a python app inside a docker container that forwards logs to the syslog server. This configuration is to be deployed by Ansible. The app takes parameters from CLI in the form of environment variables.
 
-Requirements
-------------
+You can read the __*README.md*__ file for specifics on how the app works.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+To accomplish this task, I'm dedicating a role for this configuration, along with 4 tasks and a notify-hook to restart services, when appropriate. __*Please notice that I'm NOT creating nor adding a Docker group to sudo list. Make sure you use sudo -i command before running containers*__.
 
-Role Variables
---------------
+The first task installs Docker.io and dependencies.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The second task enables the Docker service startup on boot.
 
-Dependencies
-------------
+The third task configures the Docker logging driver.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+The fourth task uses the __*docker_image*__ module to build an image based on the Dockerfile. By default, this image is named __*getweather:v1.0*__. You'll need to use this name when you run your container.
 
-Example Playbook
-----------------
+The Dockerfile describes the necessary actions to install the dependencies and copy the /getweather directory into the container and run the app (notice that the app does not run as root, but as a random user ID 5000).
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+###### For further information regarding security of docker, please check these out:
+https://docs.docker.com/engine/security/security/
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+#### Testing Exercise I
 
-License
--------
+SSH into pan-peter and run the following command, replacing the ${API_KEY} and ${CITY} variables with a valid API key and a city whose weather you would like to inspect:
+` vagrant ssh pan-peter `
+` sudo -i `
+` docker run --rm -e OPENWEATHER_API_KEY=="${API_KEY}" -e CITY_NAME="${CITY}" getweather:v1.0 `
 
-BSD
+Verify the output with the following command:
+` cat /var/log/syslog | grep "openweather" `
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+You should see something like:
+```
+Oct 13 16:42:16 localhost 50d091e7a6b4[6808]: source:openweathermap,location:New York,description:clear sky,temp:16.58,humidity:45
+```
