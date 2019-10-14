@@ -2,7 +2,7 @@
 
 The objective of this exercise is to deploy a python app inside a docker container that forwards logs to the syslog server. This configuration is to be deployed by Ansible. The app takes parameters from CLI in the form of environment variables.
 
-You can read the [_README.md_](pisces-period/pnlab/master/getweather/README.md) file for specifics on how the app works.
+You can read the [_README.md_](https://github.com/pisces-period/pnlab/blob/master/getweather/README.md) file for specifics on how the app works.
 
 To accomplish this task, I'm dedicating a role for this configuration, along with 4 tasks and a notify-hook to restart services, when appropriate. __*Please notice that I'm NOT creating nor adding a Docker group to sudo list. Make sure you use sudo -i command before running containers*__.
 
