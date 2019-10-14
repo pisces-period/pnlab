@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
       d.vm.provision :shell, inline: "cd /vagrant/ansible/; ansible-playbook -i inventory.txt play.yml" # running the playbook
     end
 	# provisioning a test VM (for remote rsyslog and NMAP testing)
-	config.vm.define "peter-pan" do |d|
+    config.vm.define "peter-pan" do |d|
       d.vm.hostname = "peter-pan"
       d.vm.network "private_network", ip: "192.168.50.11", virtualbox__intnet: true
       d.vm.provider :virtualbox do |vb|
