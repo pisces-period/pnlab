@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from setuptools import setup
 
-with open("README, 'r') as tldr:
+with open('README', 'r') as tldr:
     long_description = tldr.read()
     setup(
         name='scanner',
