@@ -4,18 +4,18 @@ The objective of this exercise is to configure an rsyslog server, capable of log
 
 To accomplish this task, I'm dedicating a role for this configuration, along with 2 tasks, both using jinja2 and Ansible template module, and a notify-hook to restart services when appropriate. Please notice the configuration is based on group/root 644 permissions and you'll need to perform sudo -i to be able to navigate the log files.
 
-Within the __*rsyslog*__ role folder structure, the __*defaults*__ folder contains a __*main.yml*__ file, which stores the desired configuration for the rsyslog server. Therefore, any desired configuration change __*MUST*__ be set here and here only (e.g., adding remote syslog servers to relay logs, custom syslog rules, etc.).
+Within the _rsyslog_ role folder structure, the _defaults_ folder contains a _main.yml_ file, which stores the desired configuration for the rsyslog server. Therefore, any desired configuration change __*MUST*__ be set here and here only (e.g., adding remote syslog servers to relay logs, custom syslog rules, etc.).
 
-When you run the Ansible playbook, these defaults are evaluated and copied to the __*rsyslog.conf*__ and __*50-default.conf*__ files respectively, using Ansible __*template*__ module. The changes (if there is any) are written to the template files, which are located in __*rsyslog/templates*__ (OBS - this is relative to the roles folder, the actual full path is /vagrant/ansible/roles/rsyslog/templates).
+When you run the Ansible playbook, these defaults are evaluated and copied to the _rsyslog.conf_ and _50-default.conf_ files respectively, using Ansible _template_ module. The changes (if there is any) are written to the template files, which are located in _rsyslog/templates_ (OBS - this is relative to the roles folder, the actual full path is /vagrant/ansible/roles/rsyslog/templates).
 
 These template files contain jinja2 expressions, which add/update/remove lines according to the defaults specified. The original file is then replaced by a new version that contains all the changes.
 
-The first task evaluates/re-writes the __*rsyslog.conf*__ file (general settings, custom rules).
+The first task evaluates/re-writes the _rsyslog.conf_ file (general settings, custom rules).
 
-The second task evaluates/re-writes the __*50-default.conf*__ file (log relay settings).
+The second task evaluates/re-writes the _50-default.conf_ file (log relay settings).
 
 #### Testing Exercise III
-If you want, you can use the readily available peter-pan box to test remote log settings, by logging into the box (do not forget to escalate privilege) and appending the following line at the end of the __*/etc/rsyslog.d/50-default.conf*__ file:
+If you want, you can use the readily available peter-pan box to test remote log settings, by logging into the box (do not forget to escalate privilege) and appending the following line at the end of the _/etc/rsyslog.d/50-default.conf_ file:
 `*.*   @192.168.50.10:514 `
 
 Next,restart the rsyslog service:
@@ -25,8 +25,10 @@ Execute the following commnand (or any other log-related one, really):
 ` logger -n 192.168.50.10 "log" `
 
 Then, SSH into Pan-Peter and verify the contents of /etc/var/log/syslog:
-` vagrant ssh pan-peter `
-` cat /etc/var/log/syslog `
+```
+vagrant ssh pan-peter
+cat /etc/var/log/syslog
+```
 
 Output example:
 ```
