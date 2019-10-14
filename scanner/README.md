@@ -10,7 +10,7 @@ Port scanning is __illegal__ in some countries. Please be careful using this app
 
 You can pass one or multiple arguments, separated by a whitespace, to the CLI.
 
-e.g. ./scanner.py 127.0.0.1 192.168.0/32 
+e.g. ./scanner.py 127.0.0.1 192.168.50.10/32 192.168.50.0/28
 
 ## Assumptions
 
