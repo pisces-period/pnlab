@@ -5,7 +5,7 @@ with open("README, 'r') as tldr:
     long_description = tldr.read()
     setup(
         name='scanner',
-        version='1.0',
+        version='v1.0',
         description='NMAP Port Scanner',
         long_description=long_description,
         author='Yuri Neves',
