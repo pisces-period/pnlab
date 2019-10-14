@@ -1,10 +1,9 @@
 # PN-LAB
+---
 
 Welcome to the PN lab. This file contains general instructions to start up the lab and run the tests.
 
 The PN lab includes an Ansible playbook, 2 ansible roles and a "detached" task (declared in the playbook), all designed to tackle the 3 challenges which have been proposed.
-
-Please read the __*README*__ files included with each role and apps for further information on how they are implemented.
 
 A few words regarding the setup:
 
@@ -29,13 +28,14 @@ Then, log into the box of your choosing by invoking the following command (repla
 
 I strongly recommend you immediately run `sudo -i` everytime you log into the boxes, so root permissions won't be a problem.
 
-Though the box logs into the / root folder by default, you'll want to `cd /vagrant` as this is the __de facto__ root folder of the pn lab.
+Though the box logs into the / root folder by default, you'll want to `cd /vagrant` as this is the _de facto_ root folder of the pn lab.
 
-I'm assuming a target environment with VirtualBox and Vagrant installed. If you wish to use a different provider other than VirtualBox, please override the __*config.vm.provider=virtualbox*__ directive on the __*Vagrantfile*__ along with any other VirtualBox-specific settings and replace them with the vendor of your choosing (https://www.vagrantup.com/docs/providers/).
+I'm assuming a target environment with VirtualBox and Vagrant installed. If you wish to use a different provider other than VirtualBox, please override the `config.vm.provider=virtualbox` directive on the `Vagrantfile` along with any other VirtualBox-specific settings and replace them with the vendor of your choosing (https://www.vagrantup.com/docs/providers/).
 
 Please read the 'Component Version' section to ensure this lab will run on your environment.
 
 ### Overview
+---
 When you log into __*pan-peter*__ box (192.168.50.10), you *shouldn't* need to run Ansible playbooks (unless you want to). Vagrant executes `ansible-playbook play.yml` command as part of the provisioning process, upon first boot, to streamline the provisioning of the box.
 
 As a result, the following roles are automatically created:
@@ -109,9 +109,20 @@ You should see the following folder structure on pan-peter VM (relative to /vagr
 │   └── setup.py
 └── Vagrantfile
 ```
-Below I describe the solution to the second challenge (the first and third challenges are described in their respective README's).
+Onto the exercises.
+
+### Rsyslog Role (Exercise III)
+---
+
+Please read the [_README_](https://github.com/pisces-period/pnlab/blob/master/ansible/roles/rsyslog/README.md) file included with this ansible role for further information on how it is implemented.
+
+### Docker Role (Exercise I)
+---
+
+Please read the [_README_](https://github.com/pisces-period/pnlab/blob/master/ansible/roles/docker/README.md) file included with this ansible role for further information on how it is implemented.
 
 ### NMAP Task (Exercise II)
+---
 
 The objective of this exercise is to create a port scanner (via programming language or third party app) which takes parameters via CLI and displays differences between subsequent scans.
 
